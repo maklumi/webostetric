@@ -1,0 +1,365 @@
+<HTML>
+<HEAD>
+<TITLE>Pregnancy Wheel</TITLE>
+
+<SCRIPT language=JavaScript>
+
+function defaults(){
+   window.resizeTo(500,530);
+   document.body.style.overflow = 'hidden';
+   showToday();
+   document.form1.day.focus();
+}
+
+function showToday()
+{
+	
+	var now = new Date();
+	var days = new Array('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');
+	var months = new Array('January','February','March','April','May','June','July','August','September','October','November','December');
+	var date = ((now.getDate()<10) ? "0" : "")+ now.getDate();
+	function fourdigits(number)
+	{
+		return (number < 1000) ? number + 1900 : number;
+	}
+	
+	tnow=new Date();
+	thour=now.getHours();
+	tmin=now.getMinutes();
+	tsec=now.getSeconds();
+	
+	//var clockface = new Array('|', '/', '-', '\\' );
+	var clockface = new Array('\u2764','\u2763','\u2762','\u2765');
+	var cface = clockface[tsec%4];
+	if (tmin<=9) { tmin="0"+tmin; }
+	//if (tsec<=9) { tsec="0"+tsec; }
+	if (thour<10) { thour="0"+thour; }
+	
+	var today = days[now.getDay()] + " " + date + " " + months[now.getMonth()] + " " + (fourdigits(now.getFullYear())) + " " + thour + ":" + tmin + " " + cface;
+	document.getElementById("todayDate").innerHTML = today;
+	
+}
+
+setInterval("showToday()", 1000);
+
+function keyPress(field)
+{
+   maxlength=document.getElementById(field.name).getAttribute('maxlength');
+   if(field.value.length==maxlength)
+   {  if(field.name=="day")
+         form1.month.focus()
+      if(field.name=="month")
+         form1.year.focus()
+      if(field.name=="year")
+         form1.calcButton.focus()
+   }
+}
+
+function calculate(form1)
+{
+   //variables
+   var month=document.form1.month.value
+   while(month.substring(0,1) == '0'){ month = month.substring(1,month.length);}   //remove leading zeros
+   month = parseInt(month)
+   var day=document.form1.day.value
+   while(day.substring(0,1) == '0'){ day = day.substring(1,day.length);}   //remove leading zeros
+   day = parseInt(day)
+   var yearTemp = parseInt(document.form1.year.value)
+   var year = (yearTemp<1000) ? yearTemp + 2000 : yearTemp;
+   var monthLong = new init_array("January", "February", "March", "April", "May",
+      "June", "July", "August", "September", "October", "November", "December");
+   var showDate = new Date() //will contain the date that is to be displayed
+   var dayLong = new Array('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');
+
+   if (document.form1.month.value == 0 || document.form1.day.value == 0 || document.form1.year.value == 0)
+   {
+      alert("You haven't entered a date");
+      return
+   }
+
+   //determine calculation method
+   if (document.form1.calcBy.value == 1)  //calculate by lmp
+   {
+      var reallmp = new Date(year, month-1, day, 12, 0, 0)
+   }
+
+   if (document.form1.calcBy.value == 2)  //calculate by due date
+   {
+      var templmp = new Date(year, month-1, day, 12, 0, 0)
+      var reallmp = new Date(templmp.getTime() - addweeks(40))
+   }
+
+
+   //calc and display LMP
+   showDate.setTime(reallmp.getTime())
+	//   document.form1.lmp.value = monthLong[showDate.getMonth()+1] + " " + showDate.getDate() + ', ' + showDate.getFullYear()
+   document.form1.lmp.value = showDate.getDate() + " " + monthLong[showDate.getMonth()+1] + " " + showDate.getFullYear()
+
+	// day or days, week or weeks
+	function pluralday(days) {
+		return (days%7)>1 ? " days " : " day ";
+	}
+	function pluralweek(days) {
+		return Math.floor(days/7)>1 ? " weeks and " : " week and ";
+	}
+	
+   //calc and display GA
+   var current = new Date()
+   var dif = (current.getTime() - reallmp.getTime())  //due date - today
+   var days = Math.round(dif / (1000 * 60 * 60 * 24))
+   document.form1.weeksToday.value = Math.floor(days / 7) + pluralweek(days) + (days % 7) + pluralday(days)
+
+   //calc and display EDD
+   showDate.setTime(reallmp.getTime() + addweeks(40))
+   document.form1.dueDate.value = showDate.getDate() + " " + monthLong[showDate.getMonth()+1] + " " + showDate.getFullYear() + " " + dayLong[showDate.getDay()]
+
+   //calc and display Time Remaining
+	/* var current = new Date()
+   var dif = (reallmp.getTime() + addweeks(40)) - current.getTime()  //due date - today
+   var days = Math.round(dif / (1000 * 60 * 60 * 24))
+   document.form1.weeksLeft.value = Math.floor(days / 7) + ' week(s) and ' + (days % 7) + ' day(s)'
+	*/
+   //calc and display atGivenWeeks
+   showDate.setTime(reallmp.getTime() + addweeks(document.form1.upcoming.value ))
+   document.form1.atGivenWeeks.value = showDate.getDate() + " " + monthLong[showDate.getMonth()+1] + " " + showDate.getFullYear()
+	
+	//at20Weeks, at38Weeks
+	showDate.setTime(reallmp.getTime() + addweeks(20)) ;
+	document.form1.at20Weeks.value = showDate.getDate() + " " + monthLong[showDate.getMonth()+1] + " " + showDate.getFullYear()
+
+	// at30Weeks
+   showDate.setTime(reallmp.getTime() + addweeks(30)) ;
+	document.form1.at30Weeks.value = showDate.getDate() + " " + monthLong[showDate.getMonth()+1] + " " + showDate.getFullYear()
+
+	// at38Weeks
+	showDate.setTime(reallmp.getTime() + addweeks(38)) ;
+	document.form1.at38Weeks.value = showDate.getDate() + " " + monthLong[showDate.getMonth()+1] + " " + showDate.getFullYear() + " " + dayLong[showDate.getDay()]
+
+   if (document.form1.month2.value == 0 || document.form1.day2.value == 0 || document.form1.year2.value == 0)
+	{
+	   document.form1.weeksOnDate.value = "Select a date";
+      return;
+	}
+
+
+  
+   
+   //clear the form and start over
+   document.form1.clearButton.focus()
+}
+
+
+
+function addweeks(weeks){
+   return weeks*24*60*60*1000*7
+}
+
+
+
+function clearForm(form1) {
+  form1.month.value=""
+  form1.day.value=""
+  form1.year.value=""
+  form1.lmp.value=""
+  form1.weeksToday.value=""
+  form1.dueDate.value=""
+  form1.weeksLeft.value=""
+  form1.at20Weeks.value=""
+  form1.at30Weeks.value=""
+  form1.atGivenWeeks.value=""
+  defaults()
+}
+
+
+
+function init_array() {
+	this.length = init_array.arguments.length;
+	for (i = 0; i < this.length; i++)
+		this[i+1] = init_array.arguments[i];
+}
+
+</SCRIPT>
+</HEAD>
+
+
+<BODY onLoad="defaults()">
+  <FORM name=form1>
+    <TABLE border=0 cellpadding=3 cellspacing=0 align=center>
+      <TR>
+        <TD colspan=3 height=39 align=center>
+          <font color="blue" face="Verdana, Arial" size="5">PREGNANCY CALCULATOR<BR></font>
+        </TD>
+      </TR>
+<TR>
+<TD colspan=3 cellpadding=3 cellspacing=0 align=center>
+<font color="black" size=4>Today </font>
+<font color="green" size=5>
+<span id=todayDate></span></font>
+</TD></TR>
+      <TR>
+        <TD bgColor='#00bcd4' align=center width=250>
+            <FONT color=white>Use </font>
+            <SELECT name=calcBy size=1>
+              <OPTION selected value=1>LMP</OPTION>
+              <OPTION value=2>EDD</OPTION>
+            </SELECT>
+            <FONT color=white>to calculate</font>
+        </TD>
+        <TD width=5 bgcolor='#00bcd4'></td> <!--spacer-->
+        <TD bgcolor='#00bcd4' align=center width=100>
+            <INPUT name=calcButton onclick=calculate() type=button value=Calculate tabindex=4>
+        </td>
+      </TR>
+
+      <TR>
+        <TD bgcolor='#00bcd4' align=center>
+           <FONT color=white>
+           <INPUT type=text size=1 name=day tabindex=1 maxlength=2 onKeyUp="keyPress(this)">/
+           <INPUT type=text size=1 name=month tabindex=2 maxlength=2 onKeyUp="keyPress(this)">/
+           <INPUT type=text size=2 name=year tabindex=3 maxlength=4 onKeyUp="keyPress(this)">
+           </font>
+        </TD>
+        <TD bgcolor='#00bcd4'></td>
+        <TD bgcolor='#00bcd4' align=center>
+           <INPUT name=clearButton onclick=clearForm(this.form) type=button value="    Clear    ">
+        </td>
+
+      </TR>
+    </table>
+    <BR>
+    <TABLE align=center border=0 cellpadding=5 cellspacing=0 style="border:1px solid black">
+      <TR>
+        <TD bgColor=#c9d1de>
+          <DIV align=right><font color="#000000" face="Verdana, Arial" size="2"><b>
+             LMP
+          </b></font></DIV>
+        </TD>
+        <TD bgColor=#c9d1de>
+          <div align="left"><font face="Verdana, Arial">
+            <INPUT name=lmp onfocus=this.blur() size=28>
+          </font></div>
+        </TD>
+      </TR>
+      <TR>
+        <TD bgColor=#c9d1de>
+          <DIV align=right><font color="#000000" face="Verdana, Arial" size="2"><b>
+             Gestation
+          </b></font></DIV>
+        </TD>
+        <TD bgColor=#c9d1de>
+          <div align="left"><font face="Verdana, Arial">
+            <INPUT name=weeksToday onfocus=this.blur() size=28>
+          </font></div>
+        </TD>
+      
+      <TR>
+        <TD bgColor=c9d1de>
+          <DIV align=right><font color="#000000" face="Verdana, Arial" size=2><b>
+            You will be</b></font>
+            <SELECT name=upcoming size=1>
+              <OPTION value=0>0</OPTION>
+              <OPTION value=1>1</OPTION>
+              <OPTION value=2>2</OPTION>
+              <OPTION value=3>3</OPTION>
+              <OPTION value=4>4</OPTION>
+              <OPTION value=5>5</OPTION>
+              <OPTION value=6>6</OPTION>
+              <OPTION value=7>7</OPTION>
+              <OPTION value=8>8</OPTION>
+              <OPTION value=9>9</OPTION>
+              <OPTION value=10>10</OPTION>
+              <OPTION value=11>11</OPTION>
+              <OPTION value=12>12</OPTION>
+              <OPTION value=13>13</OPTION>
+              <OPTION value=14>14</OPTION>
+              <OPTION value=15>15</OPTION>
+              <OPTION value=16>16</OPTION>
+              <OPTION value=17>17</OPTION>
+              <OPTION value=18>18</OPTION>
+              <OPTION value=19>19</OPTION>
+              <OPTION value=20>20</OPTION>
+              <OPTION value=21>21</OPTION>
+              <OPTION value=22>22</OPTION>
+              <OPTION value=23>23</OPTION>
+              <OPTION value=24>24</OPTION>
+              <OPTION value=25>25</OPTION>
+              <OPTION value=26>26</OPTION>
+              <OPTION value=27>27</OPTION>
+              <OPTION value=28>28</OPTION>
+              <OPTION value=29>29</OPTION>
+              <OPTION value=30>30</OPTION>
+              <OPTION value=31>31</OPTION>
+              <OPTION selected value=32>32</OPTION>
+              <OPTION value=33>33</OPTION>
+              <OPTION value=34>34</OPTION>
+              <OPTION value=35>35</OPTION>
+              <OPTION value=36>36</OPTION>
+              <OPTION value=37>37</OPTION>
+              <OPTION value=38>38</OPTION>
+              <OPTION value=39>39</OPTION>
+              <OPTION value=40>40</OPTION>
+              <OPTION value=41>41</OPTION>
+              <OPTION value=42>42</OPTION>
+            </SELECT>
+            <font color="#000000" face="Verdana, Arial" size=2><b>weeks on</b></font></div>
+        </TD>
+        <TD bgColor=#c9d1de>
+          <div align="left"><font face="Verdana, Arial">
+            <INPUT name=atGivenWeeks onfocus=this.blur() size=28>
+            </font></div>
+        </TD>
+      </TR>
+      <TR><TD height=5 bgcolor=#333333 colspan=2></td></tr>
+      <TR>
+       <TD bgColor=#6d84a4>
+          <DIV align=right><font color="black" face="Verdana, Arial" size="2"><b>
+             Expected Due Date
+          </b></font></DIV>
+        </TD>
+        <TD bgColor=#6d84a4>
+          <div align="left"><font face="Verdana, Arial">
+            <INPUT name=dueDate onfocus=this.blur() size=28>
+          </font></div>
+        </TD>
+      </TR>
+      <TR><TD height=5 bgcolor=#333333 colspan=2></td></tr>
+      
+      <TR>
+        <TD bgColor=#c9d1de>
+          <DIV align=right><font color="#000000" face="Verdana, Arial" size="2"><b>
+             20 weeks will be on 
+          </b></font></DIV>
+        </TD>
+        <TD bgColor=#c9d1de>
+          <div align="left"><font face="Verdana, Arial">
+            <INPUT name=at20Weeks onfocus=this.blur() size=28>
+          </font></div>
+        </TD>
+      </TR>
+      <TR>
+        <TD bgColor=#c9d1de>
+          <DIV align=right><font color="#000000" face="Verdana, Arial" size="2"><b>
+             30 weeks will be on 
+          </b></font></DIV>
+        </TD>
+        <TD bgColor=#c9d1de>
+          <div align="left"><font face="Verdana, Arial">
+            <INPUT name=at30Weeks onfocus=this.blur() size=28>
+          </font></div>
+        </TD>
+      </TR>
+       <TR>
+        <TD bgColor=#c9d1de>
+          <DIV align=right><font color="#000000" face="Verdana, Arial" size="2"><b>
+             Delivery after 38 weeks on
+          </b></font></DIV>
+        </TD>
+        <TD bgColor=#c9d1de>
+          <div align="left"><font face="Verdana, Arial">
+            <INPUT name=at38Weeks onfocus=this.blur() size=28>
+          </font></div>
+        </TD>
+      </TR>
+    </TABLE>
+    </FORM>
+</BODY></HTML>
