@@ -1,0 +1,41 @@
+body {
+    background-color: rosybrown;
+}
+
+td {
+    padding: 3px;
+    height: 39px;
+    align-content: center;
+    
+}
+
+
+tr {
+    border: 1px;
+}
+
+font {
+    font-family: Verdana, Arial;
+    color: blue;
+    font-size: 100%;
+    
+}
+
+#todayDate {
+    color: beige
+}
+
+#toptable {
+    color: red;
+    background-color: pink;
+}
+
+#bottomtable {
+    border: 1px;
+    border-style: solid;
+    padding: 1px;
+    border-spacing: 1px;
+    
+    
+}
+
