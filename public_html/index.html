@@ -1,7 +1,7 @@
 <HTML>
 <HEAD>
 <TITLE>Pregnancy Wheel</TITLE>
-
+<LINK rel="stylesheet" href="mystyle.css">
 <SCRIPT language=JavaScript>
 
 function defaults(){
@@ -47,11 +47,11 @@ function keyPress(field)
    maxlength=document.getElementById(field.name).getAttribute('maxlength');
    if(field.value.length==maxlength)
    {  if(field.name=="day")
-         form1.month.focus()
+         form1.month.focus();
       if(field.name=="month")
-         form1.year.focus()
+         form1.year.focus();
       if(field.name=="year")
-         form1.calcButton.focus()
+         form1.calcButton.focus();
    }
 }
 
