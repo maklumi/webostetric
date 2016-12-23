@@ -2,6 +2,7 @@
 <HEAD>
 <TITLE>Pregnancy Wheel</TITLE>
 <LINK rel="stylesheet" href="mystyle.css">
+
 <SCRIPT src="obstetriccalculator.js"></SCRIPT>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -10,65 +11,38 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
 <!-- Simple CSS file for HTML page -->
-	<link rel="stylesheet" href="stylesheets/main.css" type="text/css" media="screen" title="no title" charset="utf-8">
+<link rel="stylesheet" href="stylesheets/main.css" type="text/css" media="screen" title="no title" charset="utf-8">
 
-	<!-- jCalendar CSS - Contains Tipsy CSS - Delete as needed -->
-	<link rel="stylesheet" href="javascripts/jquery.calendar/calendar.css" type="text/css" media="screen" title="no title" charset="utf-8">
+<!-- jCalendar CSS - Contains Tipsy CSS - Delete as needed -->
+<link rel="stylesheet" href="javascripts/jquery.calendar/calendar.css" type="text/css" media="screen" title="no title" charset="utf-8">
 
-	<!-- Source CalendarJS - Contains Tipsy jQuery Plugin - Delete as needed -->
-	<script src="javascripts/jquery.calendar/jquery.calendar.min.js" type="text/javascript" charset="utf-8"></script>
+<!-- Source CalendarJS - Contains Tipsy jQuery Plugin - Delete as needed -->
+<script src="javascripts/jquery.calendar/jquery.calendar.min.js" type="text/javascript" charset="utf-8"></script>
         
 </HEAD>
 
 
 <BODY onLoad="defaults()">
     <DIV id="content">
-        <DIV id="left">
+        
   <FORM name=form1>
       <TABLE id="toptable">
-      <TR> <TD colspan=3>
-        <H1 style="font-family: verdana">   PREGNANCY CALCULATOR</H1><BR>
-        </TD> </TR>
-      <TR> <TD colspan=3>
-        <font color="black" size=4>Today </font> <span id=todayDate></span>
-        </TD></TR>
-      <TR>
-        <TD bgColor='#00bcd4' align=center width=250>
+      
+      <TR> <TD> <H1 style="font-family: verdana">   PREGNANCY CALCULATOR</H1><BR> </TD> </TR>
+      
+      <TR> <TD> <font color="black" size=4>Today </font> <span id=todayDate></span> </TD></TR>
+      
+      <TR> <TD bgColor='#00bcd4' align=center width=250> 
             <FONT color=white>Use </font>
             <SELECT name=calcBy size=1>
               <OPTION selected value=1>LMP</OPTION>
               <OPTION value=2>EDD</OPTION>
             </SELECT>
             <FONT color=white>to calculate</font>
-        </TD>
-        
-        <TD width=50 bgcolor='#00bcd4'>
-        <p>Date: <input type="text" id="datepicker"></p>
-        </td> <!--spacer-->
-        
-        <TD bgcolor='#00bcd4' align=center width=100>
-            <INPUT name=calcButton onclick=calculate() type=button value=Calculate tabindex=4>
-        </td>
+            </TD>
       </TR>
 
-      <TR>
-        <TD bgcolor='#00bcd4' align=center>
-           <FONT color=white>
-           <INPUT type=text size=1 name=day tabindex=1 maxlength=2 onKeyUp="keyPress(this)">/
-           <INPUT type=text size=1 name=month tabindex=2 maxlength=2 onKeyUp="keyPress(this)">/
-           <INPUT type=text size=2 name=year tabindex=3 maxlength=4 onKeyUp="keyPress(this)">
-           </font>
-        </TD>
-        
-        <TD bgcolor='#00bcd4'>
-        <p>Date2: <input type="text" id="datepicker2"></p>
-        </td><!--spacer-->
-        
-        <TD bgcolor='#00bcd4' align=center>
-           <INPUT name=clearButton onclick=clearForm(this.form) type=button value="    Clear    ">
-        </td>
-
-      </TR></TABLE>
+      </TABLE>
       <BR>
       
     <TABLE id=bottomtable>
@@ -215,11 +189,10 @@
       
     </TABLE>
     </FORM>
-        </DIV>
+       
         
-        <DIV id="right">
-            <BR style="clear: both">
-        </DIV>
+    <DIV id="right"></DIV>
+</DIV>
 </BODY>
         
         </HTML>

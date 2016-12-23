@@ -19,7 +19,8 @@ function showToday()
     $("#right").calendar({
         tipsy_gravity: 'n',
         click_callback: function(date) {
-            console.log(date);
+                        
+            calculate2(date);
         },
         
         scroll_to_date: false 
@@ -161,25 +162,113 @@ function calculate(form1)
 }
 
 
+function calculate2(date) {
+     //variables
+   var month=date.month;
+   
+  // month = parseInt(month);
+   var day=date.day;
+  
+  // day = parseInt(day);
+   
+   var year = date.year;
+  // console.log(" tarikh " + day + month + year);
+   
+   var monthLong = new init_array("January", "February", "March", "April", "May",
+      "June", "July", "August", "September", "October", "November", "December");
+   var showDate = new Date(); //will contain the date that is to be displayed
+   var dayLong = new Array('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');
+
+  
+   //determine calculation method
+   if (document.form1.calcBy.value == 1)  //calculate by lmp
+   {
+      var reallmp = new Date(year, month-1, day, 12, 0, 0);
+   }
+
+   if (document.form1.calcBy.value == 2)  //calculate by due date
+   {
+      var templmp = new Date(year, month-1, day, 12, 0, 0);
+      var reallmp = new Date(templmp.getTime() - addweeks(40));
+   }
+
+
+   //calc and display LMP
+   showDate.setTime(reallmp.getTime());
+	
+   document.form1.lmp.value = showDate.getDate() + " " + monthLong[showDate.getMonth()+1] + " " + showDate.getFullYear();
+
+    // day or days, week or weeks
+	function pluralday(days) {
+		return (days%7)>1 ? " days " : " day ";
+	}
+	function pluralweek(days) {
+		return Math.floor(days/7)>1 ? " weeks and " : " week and ";
+	}
+	
+   //calc and display GA
+   var current = new Date();
+   var dif = (current.getTime() - reallmp.getTime()) ; //due date - today
+   var days = Math.round(dif / (1000 * 60 * 60 * 24));
+   document.form1.weeksToday.value = Math.floor(days / 7) + pluralweek(days) + (days % 7) + pluralday(days);
+
+   //calc and display EDD
+   showDate.setTime(reallmp.getTime() + addweeks(40));
+   document.form1.dueDate.value = showDate.getDate() + " " + monthLong[showDate.getMonth()+1] + " " + showDate.getFullYear() + " " + dayLong[showDate.getDay()];
+
+   //calc and display Time Remaining
+	/* var current = new Date()
+   var dif = (reallmp.getTime() + addweeks(40)) - current.getTime()  //due date - today
+   var days = Math.round(dif / (1000 * 60 * 60 * 24))
+   document.form1.weeksLeft.value = Math.floor(days / 7) + ' week(s) and ' + (days % 7) + ' day(s)'
+	*/
+   //calc and display atGivenWeeks
+   showDate.setTime(reallmp.getTime() + addweeks(document.form1.upcoming.value ))
+   document.form1.atGivenWeeks.value = showDate.getDate() + " " + monthLong[showDate.getMonth()+1] + " " + showDate.getFullYear()
+	
+	//at20Weeks, at38Weeks
+	showDate.setTime(reallmp.getTime() + addweeks(20)) ;
+	document.form1.at20Weeks.value = showDate.getDate() + " " + monthLong[showDate.getMonth()+1] + " " + showDate.getFullYear()
+
+	// at30Weeks
+   showDate.setTime(reallmp.getTime() + addweeks(30)) ;
+	document.form1.at30Weeks.value = showDate.getDate() + " " + monthLong[showDate.getMonth()+1] + " " + showDate.getFullYear()
+
+	// at38Weeks
+	showDate.setTime(reallmp.getTime() + addweeks(38)) ;
+	document.form1.at38Weeks.value = showDate.getDate() + " " + monthLong[showDate.getMonth()+1] + " " + showDate.getFullYear() + " " + dayLong[showDate.getDay()]
+
+   if (document.form1.month2.value == 0 || document.form1.day2.value == 0 || document.form1.year2.value == 0)
+	{
+	   document.form1.weeksOnDate.value = "Select a date";
+      return;
+	}
+
+
+  
+   
+   //clear the form and start over
+   document.form1.clearButton.focus();
+}
 
 function addweeks(weeks){
-   return weeks*24*60*60*1000*7
+   return weeks*24*60*60*1000*7;
 }
 
 
 
 function clearForm(form1) {
-  form1.month.value=""
-  form1.day.value=""
-  form1.year.value=""
-  form1.lmp.value=""
-  form1.weeksToday.value=""
-  form1.dueDate.value=""
-  form1.weeksLeft.value=""
-  form1.at20Weeks.value=""
-  form1.at30Weeks.value=""
-  form1.atGivenWeeks.value=""
-  defaults()
+  form1.month.value="";
+  form1.day.value="";
+  form1.year.value="";
+  form1.lmp.value="";
+  form1.weeksToday.value="";
+  form1.dueDate.value="";
+  form1.weeksLeft.value="";
+  form1.at20Weeks.value="";
+  form1.at30Weeks.value="";
+  form1.atGivenWeeks.value="";
+  defaults();
 }
 
 

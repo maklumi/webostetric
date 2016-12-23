@@ -2,11 +2,11 @@ body {
 	margin: 0;
 	padding: 0;
 	font-family: Helvetica,Arial,sans-serif;
-	background: url('../images/bg-body.gif');
+	
 }
 
 #header {
-	height: 34px;
+	height: 12px;
 	color: #FFF;
 	padding: 16px 0 0 20px;
 	background-color: #2C2C2C;
