@@ -1,7 +1,7 @@
 
     
 function defaults(){
-   window.resizeTo(500,530);
+   window.resizeTo(600,530);
    document.body.style.overflow = 'hidden';
    showToday();
    document.form1.day.focus();
@@ -9,6 +9,22 @@ function defaults(){
 
 function showToday()
 {
+    // top date
+    $("#datepicker").datepicker({
+        numberOfMonths: 10,
+        showButtonPanel: true
+    });
+    
+    // bottom one
+    $("#right").calendar({
+        tipsy_gravity: 'n',
+        click_callback: function(date) {
+            console.log(date);
+        },
+        
+        scroll_to_date: false 
+    });
+   
 	
 	var now = new Date();
 	var days = new Array('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');
@@ -54,9 +70,9 @@ function keyPress(field)
 function calculate(form1)
 {
    //variables
-   var month=document.form1.month.value
+   var month=document.form1.month.value;
    while(month.substring(0,1) == '0'){ month = month.substring(1,month.length);}   //remove leading zeros
-   month = parseInt(month)
+   month = parseInt(month);
    var day=document.form1.day.value
    while(day.substring(0,1) == '0'){ day = day.substring(1,day.length);}   //remove leading zeros
    day = parseInt(day)
@@ -70,24 +86,24 @@ function calculate(form1)
    if (document.form1.month.value == 0 || document.form1.day.value == 0 || document.form1.year.value == 0)
    {
       alert("You haven't entered a date");
-      return
+      return;
    }
 
    //determine calculation method
    if (document.form1.calcBy.value == 1)  //calculate by lmp
    {
-      var reallmp = new Date(year, month-1, day, 12, 0, 0)
+      var reallmp = new Date(year, month-1, day, 12, 0, 0);
    }
 
    if (document.form1.calcBy.value == 2)  //calculate by due date
    {
-      var templmp = new Date(year, month-1, day, 12, 0, 0)
-      var reallmp = new Date(templmp.getTime() - addweeks(40))
+      var templmp = new Date(year, month-1, day, 12, 0, 0);
+      var reallmp = new Date(templmp.getTime() - addweeks(40));
    }
 
 
    //calc and display LMP
-   showDate.setTime(reallmp.getTime())
+   showDate.setTime(reallmp.getTime());
 	//   document.form1.lmp.value = monthLong[showDate.getMonth()+1] + " " + showDate.getDate() + ', ' + showDate.getFullYear()
    document.form1.lmp.value = showDate.getDate() + " " + monthLong[showDate.getMonth()+1] + " " + showDate.getFullYear()
 

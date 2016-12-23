@@ -3,10 +3,27 @@
 <TITLE>Pregnancy Wheel</TITLE>
 <LINK rel="stylesheet" href="mystyle.css">
 <SCRIPT src="obstetriccalculator.js"></SCRIPT>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+<!-- Simple CSS file for HTML page -->
+	<link rel="stylesheet" href="stylesheets/main.css" type="text/css" media="screen" title="no title" charset="utf-8">
+
+	<!-- jCalendar CSS - Contains Tipsy CSS - Delete as needed -->
+	<link rel="stylesheet" href="javascripts/jquery.calendar/calendar.css" type="text/css" media="screen" title="no title" charset="utf-8">
+
+	<!-- Source CalendarJS - Contains Tipsy jQuery Plugin - Delete as needed -->
+	<script src="javascripts/jquery.calendar/jquery.calendar.min.js" type="text/javascript" charset="utf-8"></script>
+        
 </HEAD>
 
 
 <BODY onLoad="defaults()">
+    <DIV id="content">
+        <DIV id="left">
   <FORM name=form1>
       <TABLE id="toptable">
       <TR> <TD colspan=3>
@@ -24,7 +41,11 @@
             </SELECT>
             <FONT color=white>to calculate</font>
         </TD>
-        <TD width=50 bgcolor='#00bcd4'></td> <!--spacer-->
+        
+        <TD width=50 bgcolor='#00bcd4'>
+        <p>Date: <input type="text" id="datepicker"></p>
+        </td> <!--spacer-->
+        
         <TD bgcolor='#00bcd4' align=center width=100>
             <INPUT name=calcButton onclick=calculate() type=button value=Calculate tabindex=4>
         </td>
@@ -38,7 +59,11 @@
            <INPUT type=text size=2 name=year tabindex=3 maxlength=4 onKeyUp="keyPress(this)">
            </font>
         </TD>
-        <TD bgcolor='#00bcd4'></td>
+        
+        <TD bgcolor='#00bcd4'>
+        <p>Date2: <input type="text" id="datepicker2"></p>
+        </td><!--spacer-->
+        
         <TD bgcolor='#00bcd4' align=center>
            <INPUT name=clearButton onclick=clearForm(this.form) type=button value="    Clear    ">
         </td>
@@ -190,4 +215,11 @@
       
     </TABLE>
     </FORM>
-</BODY></HTML>
+        </DIV>
+        
+        <DIV id="right">
+            <BR style="clear: both">
+        </DIV>
+</BODY>
+        
+        </HTML>
